@@ -1,5 +1,6 @@
 import random
 import re
+import json
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -62,8 +63,8 @@ for row in animal_table.findAll('tr'):
     if len(animal_info) > 0:
         animal_name = animal_info[0].text
 
-        # only take one word animal names
-        if ' ' not in animal_name:
+        # only take one word animal names and those without tilde
+        if ' ' not in animal_name and '\u00f1' not in animal_name:
             animal_name = re.split(r'[(\[,/]', animal_name)[0]
             animal_name = animal_name.strip('\n')
             animal_name = animal_name.strip('\xa0')
@@ -113,14 +114,5 @@ plants = plants[:plants_end+1]
 
 nouns['plants'] = plants
 
-numb1 = random.randint(1, 3)
-if numb1 == 1:
-    noun = random.choice(nouns['elements'])
-elif numb1 == 2:
-    noun = random.choice(nouns['animals'])
-else:
-    noun = random.choice(nouns['plants'])
-
-numb = random.randint(1, 20)
-
-print('Your middle name is ' + noun + ' -', numb)
+with open('data.json', 'w') as f:
+    json.dump(nouns, f)
