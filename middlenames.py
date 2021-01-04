@@ -33,9 +33,10 @@ def log_error(e):
     print(e)
 
 
-nouns = []
+nouns = {}
 
 # make a list of all chemical elements
+elements = []
 raw_element_html = simple_get('https://en.wikipedia.org/wiki/List_of_chemical_elements')
 element_html = BeautifulSoup(raw_element_html, 'html.parser')
 element_table = element_html.find_all('table', class_='wikitable')[0]
@@ -45,10 +46,13 @@ for row in element_table.findAll('tr'):
 
     if len(element_info) > 2:
         element_name = element_info[2].text
-        nouns.append(element_name)
+        elements.append(element_name)
+
+nouns['elements'] = elements
 
 
 # make a list of all animal names
+animals = []
 raw_animal_html = simple_get('https://en.wikipedia.org/wiki/List_of_animal_names')
 animal_html = BeautifulSoup(raw_animal_html, 'html.parser')
 animal_table = animal_html.find_all('table', class_='wikitable')[1]
@@ -64,10 +68,13 @@ for row in animal_table.findAll('tr'):
             animal_name = animal_name.strip('\n')
             animal_name = animal_name.strip('\xa0')
             animal_name = animal_name.rstrip()
-            nouns.append(animal_name)
+            animals.append(animal_name)
+
+nouns['animals'] = animals
 
 
 # make a list of all plant names
+plants = []
 raw_plant_html = simple_get('https://en.wikipedia.org/wiki/List_of_plants_by_common_name')
 plant_html = BeautifulSoup(raw_plant_html, 'html.parser')
 
@@ -87,24 +94,32 @@ def generate_plant_names(list_tag):
                 plant_name = re.sub(u'\u2013', '', plant).rstrip()
                 # remove plant names longer than one word and blank strings
                 if ' ' not in plant_name and '-' not in plant_name and (len(plant_name) > 2):
-                    nouns.append(plant_name)
+                    plants.append(plant_name)
 
             # for plant names that are embedded links
             else:
                 plant_name = plant.text
                 if len(plant_name) > 2 and ' ' not in plant_name and '-' not in plant_name:
                     if plant_name != 'Top' and plant_name != '0\u20139':
-                        nouns.append(plant_name)
+                        plants.append(plant_name)
 
 
 for plant_tag in plant_tags:
     generate_plant_names(plant_tag)
 
 # remove everything after Zedoary
-nouns_end = nouns.index('Zedoary')
-nouns = nouns[:nouns_end+1]
+plants_end = plants.index('Zedoary')
+plants = plants[:plants_end+1]
 
-noun = random.choice(nouns)
+nouns['plants'] = plants
+
+numb1 = random.randint(1, 3)
+if numb1 == 1:
+    noun = random.choice(nouns['elements'])
+elif numb1 == 2:
+    noun = random.choice(nouns['animals'])
+else:
+    noun = random.choice(nouns['plants'])
 
 numb = random.randint(1, 20)
 
