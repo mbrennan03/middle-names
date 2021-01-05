@@ -20,7 +20,7 @@ function generateMiddleName() {
             noun = data.plants[plantNumber];
         }
 
-        var num = Math.floor((Math.random() * 19) + 1);
+        var num = Math.floor((Math.random() * 20) + 1);
 
         var middleName = noun + ' - ' + num;
 

@@ -1,0 +1,15 @@
+body {
+    margin-left: 20px;
+}
+
+button {
+    margin-top: 30px;
+    color: white;
+    background: forestgreen;
+}
+
+hr {
+    background: forestgreen;
+    margin-right: 20px;
+    height: 2px;
+}
