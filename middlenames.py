@@ -1,6 +1,5 @@
 import random
 import re
-import json
 from requests import get
 from requests.exceptions import RequestException
 from contextlib import closing
@@ -114,5 +113,4 @@ plants = plants[:plants_end+1]
 
 nouns['plants'] = plants
 
-with open('data.json', 'w') as f:
-    json.dump(nouns, f)
+print(nouns)
